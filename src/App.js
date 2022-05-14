@@ -1,23 +1,24 @@
-import logo from './logo.svg';
 import './App.css';
+import { Connection } from './components/main';
+import { MintTrax } from './components/mint';
+import { TransferTrax } from './components/transfer';
+import { ApproveTrax } from './components/approve';
+import { TransferFromTrax } from './components/transferFrom';
+import 'bootstrap/dist/css/bootstrap.css'
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div class="d-flex justify-content-center">
+      <div >
+
+        <Connection />
+        <MintTrax />
+        <TransferTrax />
+        <ApproveTrax />
+        <TransferFromTrax />
+
+        <br /><br />
+      </div>
     </div>
   );
 }
