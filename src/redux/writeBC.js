@@ -4,16 +4,14 @@ import { connectBC } from "./readBC";
 
 export const mintToken = async (Transaction, dispatch) => {
 
-    const web3 = store.getState().data.web3;
     const contract = store.getState().data.contract;
     const acc = store.getState().data.account;
-    const tokens = web3.utils.toWei(Transaction.Tokens, 'ether');
 
     try {
         if (acc && contract) {
             await contract.methods
-                .minting(Transaction.Account, tokens)
-                .send({ from: acc })
+                .mint(Transaction.Tokens)
+                .send({ from: acc, value: Transaction.Amount })
                 .once("error", (err) => {
                     console.log('error', err)
                 })
@@ -30,6 +28,7 @@ export const mintToken = async (Transaction, dispatch) => {
 
     }
 }
+
 
 
 

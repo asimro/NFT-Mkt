@@ -6,8 +6,8 @@ import * as actions from "./action";
 import { store } from "../store";
 
 
-let web3Modal = "";
-let provider = "";
+let web3Modal = null;
+let provider = null;
 
 const init = () => {
     const providerOptions = {
@@ -58,7 +58,7 @@ export const connectBC = () => {
                             method: 'wallet_switchEthereumChain',
                             params: [
                                 {
-                                    chainId: '0x3' //0x89 matic-137 and 0x13881 mumbai
+                                    chainId: '0x4'
                                 }
                             ]
                         })
@@ -72,17 +72,17 @@ export const connectBC = () => {
                                 method: 'wallet_addEthereumChain',
                                 params: [
                                     {
-                                        chainId: '0x61',
-                                        chainName: "bsc testnet",
+                                        chainId: '0x4',
+                                        chainName: "Rinkeby Test Network",
                                         nativeCurrency: {
-                                            name: "bnb",
-                                            symbol: "bnb",
+                                            name: "ETH",
+                                            symbol: "ETH",
                                             decimals: 18
                                         },
                                         blockExplorerUrls: [
-                                            "https://testnet.bscscan.com"
+                                            "https://rinkeby.etherscan.io"
                                         ],
-                                        rpcUrls: ["https://data-seed-prebsc-1-s1.binance.org:8545/"]
+                                        rpcUrls: ["https://rinkeby.infura.io/v3/"]
                                     }
                                 ]
                             })
@@ -129,18 +129,41 @@ export const getTokenData = async (dispatch) => {
             const symbol = await contract.methods.symbol().call();
             dispatch(actions.symbol(symbol));
 
-            const decimal = await contract.methods.decimals().call();
+            const decimal = 0;
             dispatch(actions.decimal(decimal));
 
+            const price = await contract.methods.getNFTPrice().call();
+            const nftPrice = web3.utils.fromWei(price, "ether")
+            dispatch(actions.nftPrice(nftPrice));
+
             const tSupply = await contract.methods.totalSupply().call();
-            const totalSupply = web3.utils.fromWei(tSupply, "ether")
-            dispatch(actions.totalSupply(totalSupply));
+            dispatch(actions.totalSupply(tSupply));
+
+            const mSupply = await contract.methods._maxSupply().call();
+            dispatch(actions.maxSupply(mSupply));
+
+            let owners = [{
+                ownerAddress: null,
+                tokenID: null
+            }]
+            owners.pop();
+            for (let i = 0; i <= tSupply - 1; i++) {
+                let tid = await contract.methods.tokenByIndex(i).call();
+                let ownerof = await contract.methods.ownerOf(tid).call();
+                
+                owners.push({
+                    ownerAddress: ownerof,
+                    tokenID: tid
+                })
+            }
+            dispatch(actions.updateOwners(owners));
+            console.log('owners', owners)
+
 
             const bal = await contract.methods
                 .balanceOf(acc)
                 .call();
-            const balance = await web3.utils.fromWei(bal, "ether")
-            dispatch(actions.balance(balance));
+            dispatch(actions.balance(bal));
         }
         else {
             return "Wallet not connected"
@@ -158,7 +181,6 @@ export const addToken = async () => {
     const tokenAddress = CONTRACT_ADDRESS;
     const tokenSymbol = store.getState().data.symbol;
     const tokenDecimal = store.getState().data.decimal
-    // const tokenLogo = 'https://assets.codepen.io/4625073/1.jpeg';
     const tokenLogo = 'https://upload.wikimedia.org/wikipedia/commons/8/8b/Cryptocurrency_Logo.svg';
 
     try {
@@ -186,3 +208,6 @@ export const addToken = async () => {
         console.log('add token handler error ', error)
     }
 }
+
+
+

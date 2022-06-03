@@ -4,6 +4,7 @@ import { connectBC, disconnectBC, getTokenData, addToken } from '../redux/readBC
 import { ETHERSCAN_LINK, ACCOUNT_LINK, CONTRACT_ADDRESS } from "../contract/config";
 import 'bootstrap/dist/css/bootstrap.css'
 import { useEffect } from 'react';
+import '../App.css'
 
 
 export const Connection = () => {
@@ -36,9 +37,9 @@ export const Connection = () => {
 
 
     return (
-        <div>
+        <div >
             <br /> <br />
-            <div class="d-grid gap-2 mx-auto">
+            <div class="main" >
                 <div class="btn-group" role="group" aria-label="Basic mixed styles example">
                     <button type="button" class="btn btn-primary "
                         onClick={(e) => {
@@ -54,7 +55,6 @@ export const Connection = () => {
                                 ACC***{data.account > 0 ? (acc.substr(0, 5)) + "*****" + (acc.substr(39, 3)) : " "}
                             </>
                         }
-                        <br />
                     </button>
                     {acc && !data.readLoading ?
                         <button type="button" class="btn btn-danger btn-sm "
@@ -62,39 +62,59 @@ export const Connection = () => {
                                 e.preventDefault();
                                 addToken(dispatch);
                             }}>
-                            Add Token
+                            Add {data.symbol}
                         </button>
                         : ""}
                 </div>
             </div>
 
-            <br />
-            <h4 > Account : &emsp; &emsp;
-                <a href={ACCOUNT_LINK + CONTRACT_ADDRESS + "?a=" + acc}
+            <div class="main">
+                <h6 > Account : &emsp; &emsp;
+                    <a href={ACCOUNT_LINK + CONTRACT_ADDRESS + "?a=" + acc}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        title="Click here to check your account history">
+                        {data.account > 0 ? (acc.substr(0, 5)) + "********" + (acc.substr(39, 3)) : " "}
+                    </a>
+                </h6>
+            </div>
+
+            <div class="main">
+
+                <h6 > Balance :&emsp;&emsp; &emsp;
+                    {Balance > 0 ? Balance.toLocaleString() : ""}
+                </h6>
+            </div>
+
+            <div class="main">
+                Contract Address :
+                <a href={ETHERSCAN_LINK + CONTRACT_ADDRESS + "#balances"}
                     target="_blank"
                     rel="noopener noreferrer"
-                    title="Click here to check your account history">
-                    {data.account > 0 ? (acc.substr(0, 5)) + "********" + (acc.substr(39, 3)) : " "}
-                </a>
-            </h4>
-            <h4 > Balance :&emsp;&emsp; &emsp;
-                {Balance > 0 ? Balance.toLocaleString() : ""}
-            </h4>
-            <br /> <br />
+                    title="Click here to view token holders">
+                    {acc ? CONTRACT_ADDRESS : ""}
+                </a><br />
+            </div>
 
-            Contract Address :
-            <a href={ETHERSCAN_LINK + CONTRACT_ADDRESS + "#balances"}
-                target="_blank"
-                rel="noopener noreferrer"
-                title="Click here to view token holders">
-                {acc ? CONTRACT_ADDRESS : ""}
-            </a><br />
-            Name: {data.name}<br />
-            Symbol: {data.symbol}<br />
-            Decimals: {data.decimal}<br />
-            Total Supply: {data.totalSupply}<br />
-
-            <br />
+            <div class="main">
+                {data.contract && data.web3 ?
+                    <>
+                        Name: {data.name}<br />
+                        Symbol: {data.symbol}<br />
+                        NFT-Price: {data.nftPrice} Ether <br />
+                        Total Supply: {data.totalSupply}<br />
+                        Max Supply: {data.maxSupply}<br />
+                        {/* OWNERS: {data.owners.map((item) => {
+                            return (
+                                <>
+                                    NFT-ID: {item.tokenID}&emsp;
+                                    Owner: {item.ownerAddress}
+                                    <br />
+                                </>)
+                        })}<br /> */}
+                    </>
+                    : ""}
+            </div>
         </div>
     )
 }

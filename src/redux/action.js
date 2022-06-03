@@ -45,6 +45,12 @@ export const decimal = (payload) => {
         payload: payload
     }
 }
+export const nftPrice = (payload) => {
+    return {
+        type: "NFTPRICE",
+        payload: payload
+    }
+}
 
 export const balance = (payload) => {
     return {
@@ -61,6 +67,20 @@ export const totalSupply = (payload) => {
 
 }
 
+export const maxSupply = (payload) => {
+    return {
+        type: "MAXSUPPLY",
+        payload: payload
+    }
+
+}
+export const updateOwners = (payload) => {
+    return {
+        type: "OWNERS",
+        payload: payload
+    }
+
+}
 export const readLoading = (payload) => {
     return {
         type: "READLOADING",

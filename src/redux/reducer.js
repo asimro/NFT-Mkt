@@ -1,14 +1,17 @@
 const initialState = {
-    web3: "",
-    contract: "",
+    web3: null,
+    contract: null,
     account: null,
     name: null,
     symbol: null,
     decimal: null,
+    nftPrice: null,
     balance: 0,
-    totalSupply: null,
+    totalSupply: 0,
+    maxSupply: 0,
+    owners: [],
     readLoading: false,
-    readError: "",
+    readError: null,
 }
 
 
@@ -57,6 +60,12 @@ export const reducerBC = (state = initialState, action) => {
                 decimal: action.payload
             }
         }
+        case "NFTPRICE": {
+            return {
+                ...state,
+                nftPrice: action.payload
+            }
+        }
         case "BALANCE": {
             return {
                 ...state,
@@ -67,6 +76,18 @@ export const reducerBC = (state = initialState, action) => {
             return {
                 ...state,
                 totalSupply: action.payload
+            }
+        }
+        case "MAXSUPPLY": {
+            return {
+                ...state,
+                maxSupply: action.payload
+            }
+        }
+        case "OWNERS": {
+            return {
+                ...state,
+                owners: action.payload
             }
         }
         case "READLOADING": {

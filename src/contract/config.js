@@ -1,5 +1,5 @@
-export const ETHERSCAN_LINK = "https://ropsten.etherscan.io/token/";
-export const ACCOUNT_LINK = "https://ropsten.etherscan.io/token/";
+export const ETHERSCAN_LINK = "https://rinkeby.etherscan.io/token/";
+export const ACCOUNT_LINK = "https://rinkeby.etherscan.io/token/";
 
 export const INFURA_ID = "a6254e22e63c490998407800aff8463c";
 
@@ -9,19 +9,19 @@ export const INFURA_ID = "a6254e22e63c490998407800aff8463c";
 //   "ID": 1
 // }
 
-// export const NETWORK = {
-//   "NAME": "Polygon Mainnet",
-//   "SYMBOL": "MATIC",
-//   "ID": 137
-// }
-
 export const NETWORK = {
-    "NAME": "Ropsten Test Network",
+    "NAME": "Rinkeby Test Network",
     "SYMBOL": "ETH",
-    "ID": 3
+    "ID": 4
 }
 
-export const CONTRACT_ADDRESS = "0xa5a2760966aEA8EE788fC03cCA070BF1ed9948d5";
+// export const NETWORK = {
+//     "NAME": "Ropsten Test Network",
+//     "SYMBOL": "ETH",
+//     "ID": 3
+// }
+
+export const CONTRACT_ADDRESS = "0xc9F310A63b5486D44aC317CD85d578a6D8b924A9";
 
 
 export const ABI = [
@@ -42,13 +42,13 @@ export const ABI = [
             {
                 "indexed": true,
                 "internalType": "address",
-                "name": "spender",
+                "name": "approved",
                 "type": "address"
             },
             {
-                "indexed": false,
+                "indexed": true,
                 "internalType": "uint256",
-                "name": "value",
+                "name": "tokenId",
                 "type": "uint256"
             }
         ],
@@ -56,83 +56,77 @@ export const ABI = [
         "type": "event"
     },
     {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "owner",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "operator",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "bool",
+                "name": "approved",
+                "type": "bool"
+            }
+        ],
+        "name": "ApprovalForAll",
+        "type": "event"
+    },
+    {
         "inputs": [
             {
                 "internalType": "address",
-                "name": "spender",
+                "name": "to",
                 "type": "address"
             },
             {
                 "internalType": "uint256",
-                "name": "amount",
+                "name": "tokenId",
                 "type": "uint256"
             }
         ],
         "name": "approve",
-        "outputs": [
-            {
-                "internalType": "bool",
-                "name": "",
-                "type": "bool"
-            }
-        ],
+        "outputs": [],
         "stateMutability": "nonpayable",
         "type": "function"
     },
     {
         "inputs": [
             {
-                "internalType": "address",
-                "name": "account",
-                "type": "address"
-            }
-        ],
-        "name": "buyToken",
-        "outputs": [
-            {
                 "internalType": "uint256",
-                "name": "FundsRais",
+                "name": "tokenId",
                 "type": "uint256"
             }
         ],
-        "stateMutability": "payable",
-        "type": "function"
-    },
-    {
-        "inputs": [],
-        "name": "killingContract",
-        "outputs": [
-            {
-                "internalType": "uint256",
-                "name": "",
-                "type": "uint256"
-            }
-        ],
-        "stateMutability": "payable",
+        "name": "burn",
+        "outputs": [],
+        "stateMutability": "nonpayable",
         "type": "function"
     },
     {
         "inputs": [
             {
-                "internalType": "address",
-                "name": "account",
-                "type": "address"
+                "internalType": "uint256",
+                "name": "_countNfts",
+                "type": "uint256"
             },
             {
                 "internalType": "uint256",
-                "name": "_token",
+                "name": "_tokenID",
                 "type": "uint256"
             }
         ],
-        "name": "minting",
-        "outputs": [
-            {
-                "internalType": "bool",
-                "name": "",
-                "type": "bool"
-            }
-        ],
-        "stateMutability": "nonpayable",
+        "name": "mint",
+        "outputs": [],
+        "stateMutability": "payable",
         "type": "function"
     },
     {
@@ -156,6 +150,26 @@ export const ABI = [
     },
     {
         "inputs": [],
+        "name": "pause",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "name": "Paused",
+        "type": "event"
+    },
+    {
+        "inputs": [],
         "name": "renounceOwnership",
         "outputs": [],
         "stateMutability": "nonpayable",
@@ -164,19 +178,23 @@ export const ABI = [
     {
         "inputs": [
             {
-                "internalType": "uint256",
-                "name": "_newRate",
-                "type": "uint256"
-            }
-        ],
-        "name": "setRate",
-        "outputs": [
+                "internalType": "address",
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "to",
+                "type": "address"
+            },
             {
                 "internalType": "uint256",
-                "name": "newRate",
+                "name": "tokenId",
                 "type": "uint256"
             }
         ],
+        "name": "safeTransferFrom",
+        "outputs": [],
         "stateMutability": "nonpayable",
         "type": "function"
     },
@@ -184,23 +202,78 @@ export const ABI = [
         "inputs": [
             {
                 "internalType": "address",
-                "name": "recipient",
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "to",
                 "type": "address"
             },
             {
                 "internalType": "uint256",
-                "name": "amount",
+                "name": "tokenId",
                 "type": "uint256"
+            },
+            {
+                "internalType": "bytes",
+                "name": "_data",
+                "type": "bytes"
             }
         ],
-        "name": "transfer",
-        "outputs": [
+        "name": "safeTransferFrom",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "operator",
+                "type": "address"
+            },
             {
                 "internalType": "bool",
-                "name": "",
+                "name": "approved",
                 "type": "bool"
             }
         ],
+        "name": "setApprovalForAll",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "string",
+                "name": "_baseuri",
+                "type": "string"
+            }
+        ],
+        "name": "setBaseURI",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "NFTPrice_",
+                "type": "uint256"
+            }
+        ],
+        "name": "setNFTPrice",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "setStartSale",
+        "outputs": [],
         "stateMutability": "nonpayable",
         "type": "function"
     },
@@ -220,9 +293,9 @@ export const ABI = [
                 "type": "address"
             },
             {
-                "indexed": false,
+                "indexed": true,
                 "internalType": "uint256",
-                "name": "value",
+                "name": "tokenId",
                 "type": "uint256"
             }
         ],
@@ -230,44 +303,25 @@ export const ABI = [
         "type": "event"
     },
     {
-        "anonymous": false,
-        "inputs": [
-            {
-                "indexed": false,
-                "internalType": "uint256",
-                "name": "",
-                "type": "uint256"
-            }
-        ],
-        "name": "_Balances",
-        "type": "event"
-    },
-    {
         "inputs": [
             {
                 "internalType": "address",
-                "name": "tokenOwner",
+                "name": "from",
                 "type": "address"
             },
             {
                 "internalType": "address",
-                "name": "recipient",
+                "name": "to",
                 "type": "address"
             },
             {
                 "internalType": "uint256",
-                "name": "amount",
+                "name": "tokenId",
                 "type": "uint256"
             }
         ],
         "name": "transferFrom",
-        "outputs": [
-            {
-                "internalType": "bool",
-                "name": "",
-                "type": "bool"
-            }
-        ],
+        "outputs": [],
         "stateMutability": "nonpayable",
         "type": "function"
     },
@@ -285,20 +339,40 @@ export const ABI = [
         "type": "function"
     },
     {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "name": "Unpaused",
+        "type": "event"
+    },
+    {
         "stateMutability": "payable",
         "type": "fallback"
     },
     {
         "inputs": [],
-        "name": "withdrawFunds",
+        "name": "unpause",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "withdraw",
         "outputs": [
             {
                 "internalType": "uint256",
-                "name": "FundRais",
+                "name": "",
                 "type": "uint256"
             }
         ],
-        "stateMutability": "payable",
+        "stateMutability": "nonpayable",
         "type": "function"
     },
     {
@@ -306,19 +380,8 @@ export const ABI = [
         "type": "receive"
     },
     {
-        "inputs": [
-            {
-                "internalType": "address",
-                "name": "tokenOwner",
-                "type": "address"
-            },
-            {
-                "internalType": "address",
-                "name": "spender",
-                "type": "address"
-            }
-        ],
-        "name": "allowance",
+        "inputs": [],
+        "name": "_maxSupply",
         "outputs": [
             {
                 "internalType": "uint256",
@@ -333,7 +396,7 @@ export const ABI = [
         "inputs": [
             {
                 "internalType": "address",
-                "name": "account",
+                "name": "owner",
                 "type": "address"
             }
         ],
@@ -350,7 +413,7 @@ export const ABI = [
     },
     {
         "inputs": [],
-        "name": "currentSupply",
+        "name": "contractBalance",
         "outputs": [
             {
                 "internalType": "uint256",
@@ -362,8 +425,27 @@ export const ABI = [
         "type": "function"
     },
     {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "name": "getApproved",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
         "inputs": [],
-        "name": "decimals",
+        "name": "getNFTPrice",
         "outputs": [
             {
                 "internalType": "uint256",
@@ -375,39 +457,24 @@ export const ABI = [
         "type": "function"
     },
     {
-        "inputs": [],
-        "name": "fundRais",
-        "outputs": [
+        "inputs": [
             {
-                "internalType": "uint256",
-                "name": "",
-                "type": "uint256"
+                "internalType": "address",
+                "name": "owner",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "operator",
+                "type": "address"
             }
         ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [],
-        "name": "getBuyingRate",
+        "name": "isApprovedForAll",
         "outputs": [
             {
-                "internalType": "uint256",
+                "internalType": "bool",
                 "name": "",
-                "type": "uint256"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [],
-        "name": "maxSupplyCap",
-        "outputs": [
-            {
-                "internalType": "uint256",
-                "name": "",
-                "type": "uint256"
+                "type": "bool"
             }
         ],
         "stateMutability": "view",
@@ -440,13 +507,19 @@ export const ABI = [
         "type": "function"
     },
     {
-        "inputs": [],
-        "name": "salesEndTime",
-        "outputs": [
+        "inputs": [
             {
                 "internalType": "uint256",
-                "name": "",
+                "name": "tokenId",
                 "type": "uint256"
+            }
+        ],
+        "name": "ownerOf",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
             }
         ],
         "stateMutability": "view",
@@ -454,12 +527,31 @@ export const ABI = [
     },
     {
         "inputs": [],
-        "name": "salesStartTime",
+        "name": "paused",
         "outputs": [
             {
-                "internalType": "uint256",
+                "internalType": "bool",
                 "name": "",
-                "type": "uint256"
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes4",
+                "name": "interfaceId",
+                "type": "bytes4"
+            }
+        ],
+        "name": "supportsInterface",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
             }
         ],
         "stateMutability": "view",
@@ -468,6 +560,68 @@ export const ABI = [
     {
         "inputs": [],
         "name": "symbol",
+        "outputs": [
+            {
+                "internalType": "string",
+                "name": "",
+                "type": "string"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "index",
+                "type": "uint256"
+            }
+        ],
+        "name": "tokenByIndex",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "owner",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "index",
+                "type": "uint256"
+            }
+        ],
+        "name": "tokenOfOwnerByIndex",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "name": "tokenURI",
         "outputs": [
             {
                 "internalType": "string",
