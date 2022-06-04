@@ -1,42 +1,28 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { buyNFT } from '../redux/buyBC'
+import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { buyToken } from '../redux/writeBC'
 import { getTokenData } from '../redux/readBC';
-import { metaData } from '../data/metadata'
 import 'bootstrap/dist/css/bootstrap.css'
-import '../App.css';
 
 export const Buy = () => {
-    const data = useSelector((state) => state.data);
-    const perNFTPrice = data.nftPrice;
-    const mSupply = data.maxSupply;
-    const ownerAddr = data.owners?.map((item) => {
-        return (
-            item.ownerAddress
-        )
-    })
-
-    const ownerID = data.owners?.map((item) => {
-        return (
-            item.tokenID
-        )
-    })
-    console.log('tokenID', ownerID)
-
     const dispatch = useDispatch();
+    const data = useSelector((state) => state.data);
+    const mSupply = data.maxSupply;
+    const [tokenID, setTokenID] = useState();
+    const [price, setPrice] = useState();
 
-    const onClick = async (e) => {
+    const onSubmit = async (e) => {
         e.preventDefault();
         try {
-            const Transaction = {
-                Tokens: 1,
-                Amount: (perNFTPrice * 10 ** 18)
-                    .toFixed(0)
-                    .toString(),
+            const buyTransaction = {
+                ID: tokenID,
+                Amount: (price * 10 ** 18).toFixed(0).toString(),
             }
-            console.log('Transaction', Transaction);
-            await buyNFT(Transaction, dispatch);
+            console.log('Transaction', buyTransaction);
+            await buyToken(buyTransaction, dispatch);
             await getTokenData(dispatch);
+            setTokenID("");
+            setPrice("");
         }
         catch (error) {
             console.log('Submit MintTokne Error:', error)
@@ -49,47 +35,92 @@ export const Buy = () => {
         }
     }, [mSupply])
 
-
     return (
-        <div className="App">
+        <div>
             <br />
-            {data.contract && data.account ?
-                metaData?.map((json, index) => <>
-                    <div className="column">
-                        <div className="card">
-                            <img className="pet-img-size" src={json.image} />
-                            <h5> {json.name} </h5>
-                            <p> ID: {json.edition} </p>
+            <div className="App">
+                <div className="fmcontrol">
+                    {
+                        data.contract && data.account
+                            ? <>
 
-                            {ownerAddr != undefined ? (
-                                ownerID == json.edition
-                                    ? <button class="btn btn-warning">
-                                        Sold
-                                    </button>
-                                    : <button button type="submit" class="btn btn-success"
-                                        onClick={onClick}>
-                                        Buy
-                                    </button>
-                            ) : ""}
+                                <form onSubmit={onSubmit}>
+                                    <div class="mb-3">
+                                        <label htmlFor="tokenID">
+                                            Token-ID
+                                        </label><br />
+                                        <input class="form-control"
+                                            type="number"
+                                            id="tokenID"
+                                            value={tokenID}
+                                            onChange={(e) => { setTokenID(e.target.value) }}
+                                            placeholder="ID of NFT"
+                                            required="required"
+                                        />
+                                    </div>
+                                    <div class="mb-3">
+                                        <label htmlFor="price" class="form-label">
+                                            NFT Sale Price
+                                        </label><br />
+                                        <input class="form-control"
+                                            type="text"
+                                            id="price"
+                                            value={price}
+                                            onChange={(e) => { setPrice(e.target.value) }}
+                                            placeholder="NFT Price in ETH"
+                                            required="required"
+                                        />
+                                    </div>
 
-                        </div>
-                    </div>
-                </>)
-                : ""
-            }
+                                    <div class="d-grid gap-2 mx-auto">
+                                        <button type="submit" class="btn btn-warning">
+                                            Buy Token
+                                        </button>
+                                    </div>
+                                </form>
+                            </>
+                            : ""
+                    }
+                </div>
+            </div>
 
-        </div >
+            <div>
+                {data.contract && data.account ?
+                    <>
+                        {data.metaData ?
+                            data.metaData.map((result) => <>
+                                {result.listing ?
+                                    <div className="column">
+                                        <div className="card">
+                                            <img className="pet-img-size" src={result.url} />
+                                            <h5> {result.name} </h5>
+                                            <p> ID: {result.id} </p>
+                                            <p> Owner: {result.nftOwner ?
+                                                (result.nftOwner.substr(0, 5)) + "********" + (result.nftOwner.substr(39, 3))
+                                                : " "}
+                                            </p>
+                                            <p>Price: {result.price / (10 ** 18)}</p>
+                                            <p>
+                                                <button type="button" class="btn btn-success"
+                                                > Buy-Me
+                                                </button>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    : ""
+                                }
+                            </>
+                            )
+                            : ""
+                        }
+                    </>
+                    : <>
+                        Please-- - Connect Your Wallet
+                        < br />  Buying Page
+                    </>
+                }
+            </div>
+
+        </div>
     )
 }
-
-
-{/* <button button type="submit" class="btn btn-success"
-    onClick={onClick}>
-    Buy
-</button> */}
-
-// (data.owners.map((item) => {
-//     return (
-//         <p> {item.tokenID} </p >
-//     )
-// }))

@@ -1,27 +1,29 @@
 import './App.css';
-import { Connection } from './components/main';
-// import { MintTrax } from './components/mint';
-import { Buy } from './components/buy';
-// import { TransferTrax } from './components/transfer';
-// import { ApproveTrax } from './components/approve';
-// import { TransferFromTrax } from './components/transferFrom';
+import React, { Component } from 'react';
+import { Route, Routes } from 'react-router-dom';
+import { Main } from './components/Main';
+import { Mint } from './components/Mint';
+import { Listing } from './components/Listing';
+import { Buy } from './components/Buy';
+import { NavBar } from './components/Navbar';
 import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
   return (
-    <div class="d-flex justify-content-center ">
-      <div >
-
-        <Connection />
-        {/* <MintTrax /> */}
-        <Buy />
-        {/* <TransferTrax /> */}
-        {/* <ApproveTrax /> */}
-        {/* <TransferFromTrax /> */}
-
-        <br /><br />
+    <>
+      <NavBar />
+      <div class="d-flex justify-content-center ">
+        <Routes>
+          <Route path="/" element={<Main />} />
+          <Route path="/Mint" element={<Mint />} />
+          <Route path="/Listing" element={<Listing />} />
+          <Route path="/Buy" element={<Buy />} />
+          {/* <Route component={Error} /> */}
+        </Routes>
       </div>
-    </div>
+
+    </>
   );
 }
 

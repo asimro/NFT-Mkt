@@ -21,15 +21,10 @@ export const NETWORK = {
 //     "ID": 3
 // }
 
-export const CONTRACT_ADDRESS = "0xc9F310A63b5486D44aC317CD85d578a6D8b924A9";
+export const CONTRACT_ADDRESS = "0xd08c9ded7d21915e58229b3a609c80cb92dbcfd0";
 
 
 export const ABI = [
-    {
-        "inputs": [],
-        "stateMutability": "nonpayable",
-        "type": "constructor"
-    },
     {
         "anonymous": false,
         "inputs": [
@@ -81,6 +76,93 @@ export const ABI = [
         "type": "event"
     },
     {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "previousOwner",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "name": "OwnershipTransferred",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "name": "Transfer",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "string",
+                "name": "name",
+                "type": "string"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "id",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "nftOwner",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "string",
+                "name": "url",
+                "type": "string"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "price",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "bool",
+                "name": "listing",
+                "type": "bool"
+            }
+        ],
+        "name": "metadata",
+        "type": "event"
+    },
+    {
         "inputs": [
             {
                 "internalType": "address",
@@ -102,71 +184,55 @@ export const ABI = [
         "inputs": [
             {
                 "internalType": "uint256",
-                "name": "tokenId",
+                "name": "_tokenId",
                 "type": "uint256"
             }
         ],
-        "name": "burn",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "uint256",
-                "name": "_countNfts",
-                "type": "uint256"
-            },
-            {
-                "internalType": "uint256",
-                "name": "_tokenID",
-                "type": "uint256"
-            }
-        ],
-        "name": "mint",
+        "name": "buy",
         "outputs": [],
         "stateMutability": "payable",
         "type": "function"
     },
     {
-        "anonymous": false,
         "inputs": [
             {
-                "indexed": true,
-                "internalType": "address",
-                "name": "previousOwner",
-                "type": "address"
+                "internalType": "uint256",
+                "name": "_tokenId",
+                "type": "uint256"
             },
             {
-                "indexed": true,
-                "internalType": "address",
-                "name": "newOwner",
-                "type": "address"
+                "internalType": "uint256",
+                "name": "_price",
+                "type": "uint256"
             }
         ],
-        "name": "OwnershipTransferred",
-        "type": "event"
-    },
-    {
-        "inputs": [],
-        "name": "pause",
+        "name": "list",
         "outputs": [],
         "stateMutability": "nonpayable",
         "type": "function"
     },
     {
-        "anonymous": false,
         "inputs": [
             {
-                "indexed": false,
-                "internalType": "address",
-                "name": "account",
-                "type": "address"
+                "internalType": "string",
+                "name": "_name",
+                "type": "string"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_tokenId",
+                "type": "uint256"
+            },
+            {
+                "internalType": "string",
+                "name": "_url",
+                "type": "string"
             }
         ],
-        "name": "Paused",
-        "type": "event"
+        "name": "mint",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
     },
     {
         "inputs": [],
@@ -245,62 +311,11 @@ export const ABI = [
         "type": "function"
     },
     {
-        "inputs": [
-            {
-                "internalType": "string",
-                "name": "_baseuri",
-                "type": "string"
-            }
-        ],
-        "name": "setBaseURI",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "uint256",
-                "name": "NFTPrice_",
-                "type": "uint256"
-            }
-        ],
-        "name": "setNFTPrice",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
         "inputs": [],
         "name": "setStartSale",
         "outputs": [],
         "stateMutability": "nonpayable",
         "type": "function"
-    },
-    {
-        "anonymous": false,
-        "inputs": [
-            {
-                "indexed": true,
-                "internalType": "address",
-                "name": "from",
-                "type": "address"
-            },
-            {
-                "indexed": true,
-                "internalType": "address",
-                "name": "to",
-                "type": "address"
-            },
-            {
-                "indexed": true,
-                "internalType": "uint256",
-                "name": "tokenId",
-                "type": "uint256"
-            }
-        ],
-        "name": "Transfer",
-        "type": "event"
     },
     {
         "inputs": [
@@ -339,28 +354,13 @@ export const ABI = [
         "type": "function"
     },
     {
-        "anonymous": false,
-        "inputs": [
-            {
-                "indexed": false,
-                "internalType": "address",
-                "name": "account",
-                "type": "address"
-            }
-        ],
-        "name": "Unpaused",
-        "type": "event"
+        "inputs": [],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
     },
     {
         "stateMutability": "payable",
         "type": "fallback"
-    },
-    {
-        "inputs": [],
-        "name": "unpause",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
     },
     {
         "inputs": [],
@@ -444,13 +444,95 @@ export const ABI = [
         "type": "function"
     },
     {
-        "inputs": [],
-        "name": "getNFTPrice",
-        "outputs": [
+        "inputs": [
             {
                 "internalType": "uint256",
-                "name": "",
+                "name": "_tokenId",
                 "type": "uint256"
+            }
+        ],
+        "name": "getMetaData",
+        "outputs": [
+            {
+                "internalType": "string",
+                "name": "name",
+                "type": "string"
+            },
+            {
+                "internalType": "uint256",
+                "name": "id",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "nftOwner",
+                "type": "address"
+            },
+            {
+                "internalType": "string",
+                "name": "url",
+                "type": "string"
+            },
+            {
+                "internalType": "uint256",
+                "name": "price",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bool",
+                "name": "listing",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_tokenId",
+                "type": "uint256"
+            }
+        ],
+        "name": "getMetaData2",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "string",
+                        "name": "name",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "id",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "nftOwner",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "url",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "price",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "bool",
+                        "name": "listing",
+                        "type": "bool"
+                    }
+                ],
+                "internalType": "struct AnyNFT.Meta",
+                "name": "",
+                "type": "tuple"
             }
         ],
         "stateMutability": "view",
@@ -520,19 +602,6 @@ export const ABI = [
                 "internalType": "address",
                 "name": "",
                 "type": "address"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [],
-        "name": "paused",
-        "outputs": [
-            {
-                "internalType": "bool",
-                "name": "",
-                "type": "bool"
             }
         ],
         "stateMutability": "view",

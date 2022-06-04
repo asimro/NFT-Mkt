@@ -9,7 +9,7 @@ const initialState = {
     balance: 0,
     totalSupply: 0,
     maxSupply: 0,
-    owners: [],
+    metaData: [],
     readLoading: false,
     readError: null,
 }
@@ -84,10 +84,10 @@ export const reducerBC = (state = initialState, action) => {
                 maxSupply: action.payload
             }
         }
-        case "OWNERS": {
+        case "METADATA": {
             return {
                 ...state,
-                owners: action.payload
+                metaData: action.payload
             }
         }
         case "READLOADING": {

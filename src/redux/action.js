@@ -74,9 +74,9 @@ export const maxSupply = (payload) => {
     }
 
 }
-export const updateOwners = (payload) => {
+export const updateMetaData = (payload) => {
     return {
-        type: "OWNERS",
+        type: "METADATA",
         payload: payload
     }
 

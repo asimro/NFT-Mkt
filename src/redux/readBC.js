@@ -51,6 +51,7 @@ export const connectBC = () => {
                         dispatch(actions.account(accounts[0]));
                     });
                     dispatch(actions.readLoading(false));
+                    getTokenData(dispatch);
 
                 } else {
                     try {
@@ -132,33 +133,19 @@ export const getTokenData = async (dispatch) => {
             const decimal = 0;
             dispatch(actions.decimal(decimal));
 
-            const price = await contract.methods.getNFTPrice().call();
-            const nftPrice = web3.utils.fromWei(price, "ether")
-            dispatch(actions.nftPrice(nftPrice));
+            const mSupply = await contract.methods._maxSupply().call();
+            dispatch(actions.maxSupply(mSupply));
 
             const tSupply = await contract.methods.totalSupply().call();
             dispatch(actions.totalSupply(tSupply));
 
-            const mSupply = await contract.methods._maxSupply().call();
-            dispatch(actions.maxSupply(mSupply));
-
-            let owners = [{
-                ownerAddress: null,
-                tokenID: null
-            }]
-            owners.pop();
+            let metadata = []
             for (let i = 0; i <= tSupply - 1; i++) {
                 let tid = await contract.methods.tokenByIndex(i).call();
-                let ownerof = await contract.methods.ownerOf(tid).call();
-                
-                owners.push({
-                    ownerAddress: ownerof,
-                    tokenID: tid
-                })
+                let meta = await contract.methods.getMetaData(tid).call();
+                metadata.push(meta)
             }
-            dispatch(actions.updateOwners(owners));
-            console.log('owners', owners)
-
+            dispatch(actions.updateMetaData(metadata));
 
             const bal = await contract.methods
                 .balanceOf(acc)
@@ -173,6 +160,10 @@ export const getTokenData = async (dispatch) => {
         console.log('error get token data', error)
     }
 }
+
+
+
+
 
 
 
