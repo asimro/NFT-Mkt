@@ -1,7 +1,7 @@
 import React from 'react'
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getTokenData } from '../redux/readBC';
+import { getTokenData, eventListner } from '../redux/readBC';
 import { ETHERSCAN_LINK, ACCOUNT_LINK, CONTRACT_ADDRESS } from "../contract/config";
 import 'bootstrap/dist/css/bootstrap.css'
 import '../App.css'
@@ -12,14 +12,22 @@ export const Main = () => {
     const dispatch = useDispatch();
     let data = useSelector((state) => state.data);
     const Balance = Number(data.balance).toFixed().toString();
+    const [mintEvent, setMintEvent] = useState();
 
 
+    const listMintEvents = async () => {
+        await eventListner(dispatch);
+        console.log('data.eventmint', data.event)
+        setMintEvent(data.event);
+    }
 
     useEffect(async () => {
-        if (data.account) {
+        if (data.contractWS) {
+            !mintEvent && await listMintEvents();
             await getTokenData(dispatch);
+
         }
-    }, [data.account])
+    }, [data.contractWS, mintEvent])
 
 
     return (
@@ -65,6 +73,8 @@ export const Main = () => {
                     : ""
                 }
             </div>
+
+
             <div>
                 {data.contract && data.account ?
                     <>
@@ -102,69 +112,11 @@ export const Main = () => {
                 }
             </div>
 
+
+
             
+
+
         </div>
     )
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// const connectHandler = () => {
-//     try {
-//         if (!acc) {
-//             dispatch(connectBC());
-//         }
-//         else {
-//             dispatch(disconnectBC())
-//         }
-//     } catch (error) {
-//         console.log('error connecting', error)
-//     }
-// }
-
-
-
-
-{/* <div class="main" >
-                <div class="btn-group" role="group" aria-label="Basic mixed styles example">
-                    <button type="button" class="btn btn-primary "
-                        onClick={(e) => {
-                            e.preventDefault();
-                            connectHandler();
-                        }}>
-                        {!acc && !data.readLoading && "Connect"}
-                        {!acc && data.readLoading && "Connecting"}
-                        {acc && !data.readLoading &&
-                            <>
-                                <button type="button" class="btn btn-danger btn-sm ">X</button>
-                                &emsp;
-                                ACC***{data.account > 0 ? (acc.substr(0, 5)) + "*****" + (acc.substr(39, 3)) : " "}
-                            </>
-                        }
-                    </button>
-                    {acc && !data.readLoading ?
-                        <button type="button" class="btn btn-danger btn-sm "
-                            onClick={(e) => {
-                                e.preventDefault();
-                                addToken(dispatch);
-                            }}>
-                            Add {data.symbol}
-                        </button>
-                        : ""}
-                </div>
-            </div> */}

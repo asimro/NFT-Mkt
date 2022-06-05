@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { mintToken } from '../redux/writeBC'
-import { getTokenData } from '../redux/readBC';
+import { getTokenData, eventListner } from '../redux/readBC';
 import { ACCOUNT_LINK, CONTRACT_ADDRESS } from "../contract/config";
 import { Listing } from "./Listing";
 import 'bootstrap/dist/css/bootstrap.css'
@@ -11,10 +11,17 @@ export const Mint = () => {
     const dispatch = useDispatch();
     const data = useSelector((state) => state.data);
     const Balance = Number(data.balance).toFixed().toString();
-    const mSupply = data.maxSupply;
+    const tSupply = data.totalSupply;
     const [name, setName] = useState();
     const [tokenID, setTokenID] = useState();
     const [URL, setURL] = useState();
+    const [mintEvent, setMintEvent] = useState();
+
+   
+    const listMintEvents = async () => {
+        await eventListner(dispatch);
+        setMintEvent(data.event);
+    }
 
     const onSubmit = async (e) => {
         e.preventDefault();
@@ -37,10 +44,11 @@ export const Mint = () => {
     }
 
     useEffect(async () => {
-        if (mSupply) {
+        if (tSupply || data.contractWS) {
+            !mintEvent && await listMintEvents();
             await getTokenData(dispatch);
         }
-    }, [mSupply])
+    }, [tSupply, data.contractWS, mintEvent])
 
 
     return (
@@ -125,6 +133,8 @@ export const Mint = () => {
                                 </h4>
                             </div>
                         </div>
+
+                        
                         <div>
                             {data.metaData ?
                                 data.metaData.map((result) => <>

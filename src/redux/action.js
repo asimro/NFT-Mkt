@@ -18,6 +18,13 @@ export const contract = (payload) => {
     }
 }
 
+export const contractWS = (payload) => {
+    return {
+        type: "CONTRACTWS",
+        payload: payload
+    }
+}
+
 export const account = (payload) => {
     return {
         type: "ACCOUNT",
@@ -81,6 +88,15 @@ export const updateMetaData = (payload) => {
     }
 
 }
+
+export const eventMetaData = (payload) => {
+    return {
+        type: "EVENT",
+        payload: payload
+    }
+
+}
+
 export const readLoading = (payload) => {
     return {
         type: "READLOADING",

@@ -43,9 +43,21 @@ export const connectBC = () => {
                         ABI,
                         CONTRACT_ADDRESS
                     );
+
+                    const web3WS = new Web3(
+                        new Web3.providers.WebsocketProvider(
+                            'wss://rinkeby.infura.io/ws/v3/a6254e22e63c490998407800aff8463c'
+                        ));
+                    const wsContract = new web3WS.eth.Contract(
+                        ABI,
+                        CONTRACT_ADDRESS
+                    );
+                    console.log('wsContract', wsContract);
+
                     dispatch(actions.web3(web3));
                     dispatch(actions.account(accounts[0]));
                     dispatch(actions.contract(contract));
+                    dispatch(actions.contractWS(wsContract));
 
                     provider.on("accountsChanged", (accounts) => {
                         dispatch(actions.account(accounts[0]));
@@ -165,9 +177,6 @@ export const getTokenData = async (dispatch) => {
 
 
 
-
-
-
 export const addToken = async () => {
     const tokenAddress = CONTRACT_ADDRESS;
     const tokenSymbol = store.getState().data.symbol;
@@ -202,3 +211,22 @@ export const addToken = async () => {
 
 
 
+export const eventListner = async (dispatch) => {
+    const contractws = store.getState().data.contractWS;
+    console.log('contractws', contractws);
+    try {
+        if (contractws) {
+            await contractws.events.metadata({},
+                function (error, event) {
+                    console.log('event.returnValues', event.returnValues)
+                    dispatch(actions.eventMetaData(event.returnValues));
+                });
+        }
+        else {
+            return "Wallet not connected"
+        }
+
+    } catch (error) {
+        console.log('error get event listner', error)
+    }
+}

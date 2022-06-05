@@ -1,6 +1,7 @@
 const initialState = {
     web3: null,
     contract: null,
+    contractWS: null,
     account: null,
     name: null,
     symbol: null,
@@ -10,6 +11,7 @@ const initialState = {
     totalSupply: 0,
     maxSupply: 0,
     metaData: [],
+    event: null,
     readLoading: false,
     readError: null,
 }
@@ -34,6 +36,12 @@ export const reducerBC = (state = initialState, action) => {
             return {
                 ...state,
                 contract: action.payload
+            }
+        }
+        case "CONTRACTWS": {
+            return {
+                ...state,
+                contractWS: action.payload
             }
         }
         case "ACCOUNT": {
@@ -88,6 +96,12 @@ export const reducerBC = (state = initialState, action) => {
             return {
                 ...state,
                 metaData: action.payload
+            }
+        }
+        case "EVENT": {
+            return {
+                ...state,
+                event: action.payload
             }
         }
         case "READLOADING": {
